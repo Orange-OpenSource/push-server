@@ -1,34 +1,39 @@
 var sockjs  = require('sockjs'),
 	http    = require('http'),
-	redis   = require('redis');
+	redis   = require('redis'),;
 
-// Sockjs server
-var sockJSOptions = {sockjs_url: "http://cdn.sockjs.org/sockjs-0.3.min.js"};
-var sockjs_chat = sockjs.createServer(sockjs_opts);
-sockjs_chat.on('connection', function(conn) {
-    var browser = redis.createClient();
-    browser.subscribe('chat_channel');
+function start (expressServer, options) {
+    var config = {
+            channel: options.channel || 'push_channel',
+            redisUrl: options.redisUrl || 'redis://localhost:6376',
+            prefix: options.prefix || 'pushserver'
+        },
+        password,
+        parsedUrl  = url.parse(config.redisUrl),
+        parsedAuth = (parsedUrl.auth || '').split(':');
 
-    // When we see a message on chat_channel, send it to the browser
-    browser.on("message", function(channel, message){
-        conn.write(message);
+    // Sockjs server
+    var sockJSServer = sockjs.createServer();
+
+    sockJSServer.on('connection', function(conn) {
+        var pushEventListener = redis.createClient(parsedUrl.port, parsedUrl.hostname);
+        if (password = parsedAuth[1]) {
+            redis.auth(password, function(err) {
+              if (err) throw err;
+            });
+        }
+
+        pushEventListener.subscribe(config.channel);
+
+        // When we see a message on channel, send it to the browser
+        pushEventListener.on('message', function(channel, message){
+            conn.write(message);
+        });
     });
 
-    // When we receive a message from browser, send it to be published
-    conn.on('data', function(message) {
-        publisher.publish('chat_channel', message);
-    });
-});
+    sockJSServer.installHandlers(expressServer, {prefix: config.prefix});
+}
 
-// Express server
-var app = express();
-var server = http.createServer(app);
-
-sockjs_chat.installHandlers(server, {prefix:'/chat'});
-
-console.log(' [*] Listening on 0.0.0.0:9001' );
-server.listen(9001, '0.0.0.0');
-
-app.get('*', function (req, res) {
-    
-});
+module.exports = {
+    start: start
+};
