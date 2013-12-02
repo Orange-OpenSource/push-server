@@ -1,12 +1,12 @@
 var sockjs  = require('sockjs'),
-	http    = require('http'),
-	redis   = require('redis'),;
+	redis   = require('redis'),
+    url     = require('url');
 
-function start (expressServer, options) {
+function start (httpServer, options) {
     var config = {
-            channel: options.channel || 'push_channel',
-            redisUrl: options.redisUrl || 'redis://localhost:6376',
-            prefix: options.prefix || 'pushserver'
+            channel: (options && options.channel) || 'pushserver',
+            redisUrl: (options && options.redisUrl) || 'redis://localhost:6379',
+            prefix: (options && options.prefix) || '/pushserver'
         },
         password,
         parsedUrl  = url.parse(config.redisUrl),
@@ -15,7 +15,7 @@ function start (expressServer, options) {
     // Sockjs server
     var sockJSServer = sockjs.createServer();
 
-    sockJSServer.on('connection', function(conn) {
+    sockJSServer.on('connection', function(sockJSClientConnection) {
         var pushEventListener = redis.createClient(parsedUrl.port, parsedUrl.hostname);
         if (password = parsedAuth[1]) {
             redis.auth(password, function(err) {
@@ -27,11 +27,11 @@ function start (expressServer, options) {
 
         // When we see a message on channel, send it to the browser
         pushEventListener.on('message', function(channel, message){
-            conn.write(message);
+            sockJSClientConnection.write(message);
         });
     });
 
-    sockJSServer.installHandlers(expressServer, {prefix: config.prefix});
+    sockJSServer.installHandlers(httpServer, {prefix: config.prefix});
 }
 
 module.exports = {

@@ -1,6 +1,6 @@
 {
-  "name": "orange-twitterstreamclient",
-  "version": "0.0.1",
+  "name": "orange-pushserver",
+  "version": "0.1.0",
   "description": "A SockJS server publishing message from a Redis store to clients",
   "main": "index.js",
   "scripts": {
@@ -11,8 +11,7 @@
     "url": "gitolite@orangeforge.rd.francetelecom.fr:ots/pushserver.git"
   },
   "dependencies": {
-	"express": "3.0.x",
-	"sockjs": "0.3.x",
+    "sockjs": "0.3.x",
     "redis": "0.9.x"
   },
   "keywords": [
