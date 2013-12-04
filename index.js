@@ -18,7 +18,7 @@ function start (httpServer, options) {
     sockJSServer.on('connection', function(sockJSClientConnection) {
         var pushEventListener = redis.createClient(parsedUrl.port, parsedUrl.hostname);
         if (password = parsedAuth[1]) {
-            redis.auth(password, function(err) {
+            pushEventListener.auth(password, function(err) {
               if (err) throw err;
             });
         }
