@@ -26,8 +26,11 @@ function start (httpServer, options) {
         pushEventListener.subscribe(config.channel);
 
         // When we see a message on channel, send it to the browser
-        pushEventListener.on('message', function(channel, message){
+        pushEventListener.on('message', function(channel, message) {
             sockJSClientConnection.write(message);
+        });
+        sockJSClientConnection.on('close', function(channel, message) {
+            pushEventListener.end();
         });
     });
 
