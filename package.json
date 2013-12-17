@@ -1,6 +1,6 @@
 {
   "name": "orange-pushserver",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A SockJS server publishing message from a Redis store to clients",
   "main": "index.js",
   "scripts": {
