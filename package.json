@@ -1,6 +1,6 @@
 {
     "name": "orange-pushserver",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "A SockJS server publishing message from a Redis store to clients",
     "main": "index.js",
     "scripts": {
@@ -12,7 +12,7 @@
     },
     "dependencies": {
         "sockjs": "0.3.x",
-        "redis": "0.9.x"
+        "redis": "0.10.x"
     },
     "keywords": [
         "twitter"
