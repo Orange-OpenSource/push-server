@@ -36,7 +36,6 @@ function start(httpServer, options) {
             sockJSClientConnection.close();
         });
         sockJSClientConnection.on('close', function() {
-            console.log('disconnection from redis on event');
             pushEventListener.quit();
         });
     });
