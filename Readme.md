@@ -5,14 +5,14 @@ PushServer a minimal push server bridging together [Redis](https://github.com/an
 To install TwitterStreamClient, run: 
 
 ```
-npm install orange-pushserver --registry http://10.194.224.187:4873/
+npm install push-server
 ```
 
 Setting up a push server connected to your local Redis instance is as simple as:
 
 ```javascript
 var http = require('http'),
-    pushServer = require('orange-pushserver'),
+    pushServer = require('push-server'),
     server = http.createServer();
 
 pushServer.start(server);

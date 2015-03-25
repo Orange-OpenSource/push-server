@@ -1,8 +1,12 @@
 {
-    "name": "orange-pushserver",
-    "version": "0.4.3",
+    "name": "push-server",
+    "version": "0.5.0",
     "description": "A SockJS server publishing message from a Redis store to clients",
+    "author": "Maxime Lardenois <maxime.lardenois@orange.com>",
     "main": "index.js",
+    "engines": {
+        "node": ">= 0.10.0"
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 0"
     },
@@ -15,11 +19,11 @@
         "redis": "0.10.x"
     },
     "keywords": [
-        "twitter"
+        "redis",
+        "sockjs",
+        "push",
+        "websocket"
     ],
-    "author": "Maxime Lardenois <maxime.lardenois@orange.com>",
-    "license": "private",
-    "publishConfig": {
-        "registry": "http://10.192.36.79:8081/artifactory/api/npm/npm-local-orange"
-    }
+    "license": "MIT",
+    "repository": "Orange-OpenSource/push-server"
 }
